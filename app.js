@@ -24,6 +24,18 @@ export default class Powerline extends App {
 
 	}
 
+	initServer() {
+
+		console.log( "initServer" );
+		this.addEventListener( "onJoin", e => {
+
+			console.log( "try broadcast" );
+			this.dispatchEvent( "network", { data: { foo: "bar" } } );
+
+		} );
+
+	}
+
 }
 
 const ed = new EventDispatcher();

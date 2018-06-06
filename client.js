@@ -1,6 +1,7 @@
 
 import { bind, Component, wire } from "./node_modules/hyperhtml/esm/index.js";
 import EventDispatcher from "./node_modules/wc-eventdispatcher/src/EventDispatcher.js";
+import Powerline from "./app.js";
 
 class SimpleWebSocket extends EventDispatcher {
 
@@ -83,6 +84,8 @@ class UI extends Component {
 
 		super();
 
+		this.powerline = new Powerline();
+
 		const nova = this.nova = new SimpleWebSocket( { scheme: "ws", host: "localhost", port: "8080", autoReconnect: true, name: "Nova" } );
 
 		nova.json( { id: "login" } );
@@ -156,5 +159,3 @@ class UI extends Component {
 }
 
 document.addEventListener( "DOMContentLoaded", () => bind( document.body )`${new UI()}` );
-
-import( "./app.js" );
