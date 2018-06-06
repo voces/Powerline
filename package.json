@@ -1,0 +1,31 @@
+{
+  "name": "wc-powerline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "module": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.19.1",
+    "eslint-config-mdcs": "^4.2.3"
+  },
+  "dependencies": {
+    "esm": "^3.0.46",
+    "express": "^4.16.3",
+    "hyperhtml": "^2.10.3",
+    "isomorphic-fetch": "^2.2.1",
+    "seedrandom": "^2.4.3",
+    "three": "^0.92.0",
+    "wc-eventdispatcher": "^1.0.0",
+    "ws": "^5.2.0"
+  },
+  "esm": {
+    "cjs": true,
+    "mode": "all"
+  }
+}

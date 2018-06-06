@@ -1,0 +1,49 @@
+
+@import url( https://fonts.googleapis.com/css?family=Open+Sans );
+
+html { height: 100%; }
+
+body {
+	margin: 0;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Open Sans', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background: url( "/img/background.png" );
+}
+
+#splash {
+	z-index: 1;
+	color: #05ffff;
+	text-align: center;
+	filter: drop-shadow( 0 0 3px #04e6e8 );
+}
+#splash input, #splash select {
+	display: block;
+	width: 15em;
+	border: 0.125em solid #05ffff;
+	padding: 0.25em 0.5em;
+	border-radius: 0.25em;
+	background-color: #003a3a;
+	color: inherit;
+	font-size: inherit;
+	font-family: inherit;
+	margin: 1em;
+}
+#splash div {
+	text-transform: uppercase;
+	font-weight: bold;
+}
