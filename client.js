@@ -38,8 +38,10 @@ class SimpleWebSocket extends EventDispatcher {
 	onMessage( e ) {
 
 		const data = JSON.parse( e.data );
-		this.log( "[RECV]", data );
+		// this.log( "[RECV]", data );
+		if ( data.type ) data._type = data.type;
 		this.dispatchEvent( data.id, data );
+		if ( this.onMessageHandler ) this.onMessageHandler( data );
 
 	}
 
@@ -52,7 +54,6 @@ class SimpleWebSocket extends EventDispatcher {
 
 		}
 
-		this.log( "[SEND]", data );
 		this.ws.send( JSON.stringify( data, this.replacer ) );
 
 	}
@@ -73,6 +74,7 @@ class UI extends Component {
 	get defaultState() {
 
 		return {
+			showSplash: true,
 			nick: localStorage.getItem( "nick" ),
 			hosts: [],
 			rooms: []
@@ -84,7 +86,12 @@ class UI extends Component {
 
 		super();
 
-		this.powerline = new Powerline();
+		window.powerline = window.app = this.powerline = new Powerline( {
+			isHost: false,
+			account: "verit",
+			clientTransmit: e => this.host && this.host.json( e )
+		} );
+		// this.powerline.addEventListener( "network", e => this.host && this.host.json( { id: "network", data: e.data } ) );
 
 		const nova = this.nova = new SimpleWebSocket( { scheme: "ws", host: "localhost", port: "8080", autoReconnect: true, name: "Nova" } );
 
@@ -96,6 +103,8 @@ class UI extends Component {
 		nova.addEventListener( "onBridge", e => ( Object.assign( this.host, { scheme: e.scheme, host: e.ip, port: e.port, key: e.key } ), this.host.connect() ) );
 		nova.addEventListener( "onReserve", e => this.setState( { rooms: this.state.rooms.concat( [ e ] ) } ) );
 
+		setInterval( () => this.tick(), 5000 );
+
 	}
 
 	onsubmit( e ) {
@@ -104,13 +113,19 @@ class UI extends Component {
 
 		if ( ! this.state.host ) return;
 
-		if ( ! this.state.room ) this.nova.json( { id: "reserve", host: this.state.host, name: Math.random().toString().slice( 2 ) } );
+		this.setState( { showSplash: false } );
+
+		if ( ! this.state.room ) this.nova.json( { id: "reserve", host: this.state.host, name: Math.random().toString().slice( 2, 8 ) } );
 		this.nova.json( { id: "bridge", host: this.state.host } );
 
 		const host = window.host = this.host = new SimpleWebSocket( { name: "Host" } );
 		host.addEventListener( "open", () => host.json( { id: "key", key: host.key } ) );
 		host.addEventListener( "onKey", () => host.json( { id: "room", name: this.state.room.name } ) );
 		host.addEventListener( "onRoom", data => ! data.app && host.json( { id: "app", path: "wc-powerline" } ) );
+		host.addEventListener( "app", data => this.powerline.dispatchEvent( data._type || "update", data ) );
+		// host.addEventListener( "onKeyDown", data => this.powerline.dispatchEvent( "onKeyDown", data ) );
+		host.onMessageHandler = data =>
+			! [ "open", "onKey", "onRoom", "app" ].includes( data.id ) && this.powerline.dispatchEvent( data.id, data );
 
 	}
 
@@ -137,11 +152,11 @@ class UI extends Component {
 		if ( ! this.state.room && this.state.rooms.length ) this.state.room = this.state.rooms[ 0 ];
 
 		return this.html`
-		<canvas></canvas>
-		<form id="splash" onsubmit=${this}>
+		${this.powerline.systems[ 0 ].renderer.domElement}
+		<form hidden=${! this.state.showSplash} id="splash" onsubmit=${this} data-call="onsubmit">
 			<h1>Powerline</h1>
 			<select oninput=${this} data-call="onhost">
-				<option disabled selected=${! this.state.hosts.length}>Server</option>
+				<option disabled selected=${! this.state.hosts.length}>&lt;No servers available&gt;</option>
 				${this.state.hosts.map( h => wire()`<option>${h}</option>` )}
 			</select>
 			<select>
@@ -153,6 +168,15 @@ class UI extends Component {
 			<div>[ Press Enter To Play ]</div>
 		</form>
 		`;
+
+	}
+
+	tick() {
+
+		if ( ! this.state.showSplash ) return;
+
+		this.nova.json( { id: "hostList" } );
+		this.nova.json( { id: "roomList" } );
 
 	}
 
