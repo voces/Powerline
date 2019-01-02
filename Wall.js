@@ -6,7 +6,10 @@ class Wall extends Doodad {
 
 	static get defaultData() {
 
-		return { model: { object3D: new Mesh( new BoxBufferGeometry( 1, 1, 1 ), new MeshPhongMaterial( { color: 0x05ffff } ) ) } };
+		return { model: { object3D: new Mesh(
+			new BoxBufferGeometry( 1, 1, 1 ),
+			new MeshPhongMaterial( { color: 0x05ffff } )
+		) } };
 
 	}
 

@@ -2,17 +2,9 @@
 import System from "./node_modules/knack-ecs/src/System.js";
 import { randomInt } from "./node_modules/webcraft/src/util.js";
 import Snake from "./Snake.js";
-import Wall from "./Wall.js";
+import Block from "./Block.js";
 
 export default class SnakeMovement extends System {
-
-	constructor() {
-
-		super();
-
-		this.addEventListener( "entityadded", this.onEntityAdded.bind( this ) );
-
-	}
 
 	test( entity ) {
 
@@ -30,14 +22,14 @@ export default class SnakeMovement extends System {
 
 		// Create a new tail if needed
 		if ( snake.tail.length < snake.length )
-			snake.tail.push( snake.app.addEntity( new Wall( { x: snake.x, y: snake.y } ) ) );
+			snake.tail.push( snake.app.addEntity( new Block( { x: snake.x, y: snake.y } ) ) );
 
 		// Else move end to front
 		else {
 
-			const wall = snake.tail.shift();
-			wall.update( { x: snake.x, y: snake.y } );
-			snake.tail.push( wall );
+			const block = snake.tail.shift();
+			block.update( { x: snake.x, y: snake.y } );
+			snake.tail.push( block );
 
 		}
 
@@ -70,20 +62,19 @@ export default class SnakeMovement extends System {
 
 	}
 
-	render( snake, elapsed ) {
+	// render( snake, elapsed ) {
 
-		// const distance = elapsed / 100;
+	// 	const distance = snake.speed * elapsed / 100;
+	// 	// console.log( "SnakeMovement#update", this.app.update.last, snake.x, snake.y );
+	// 	switch ( snake.direction ) {
 
-		// // console.log( "SnakeMovement#update", this.app.update.last, snake.x, snake.y );
-		// switch ( snake.direction ) {
+	// 		// case "up": return snake.model.y += distance;
+	// 		// case "down": return snake.model.y -= distance;
+	// 		case "left": return snake.model.x -= distance;
+	// 		case "right": return snake.model.x += distance;
 
-		// 	case "up": return snake.model.update( { y: snake.model.y + distance } );
-		// 	case "down": return snake.model.update( { y: snake.model.y - distance } );
-		// 	case "left": return snake.model.update( { x: snake.model.x - distance } );
-		// 	case "right": return snake.model.update( { x: snake.model.x + distance } );
+	// 	}
 
-		// }
-
-	}
+	// }
 
 }

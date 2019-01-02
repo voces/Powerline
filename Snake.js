@@ -1,6 +1,6 @@
 
 import Doodad from "./node_modules/webcraft/src/entities/Doodad.js";
-import { BoxBufferGeometry, MeshPhongMaterial, Mesh } from "./node_modules/three/build/three.module.js";
+import { SphereBufferGeometry, MeshPhongMaterial, Mesh } from "./node_modules/three/build/three.module.js";
 import List from "./List.js";
 
 class Snake extends Doodad {
@@ -15,11 +15,12 @@ class Snake extends Doodad {
 
 		return {
 			...super.defaultData,
-			model: {
-				object3D: new Mesh( new BoxBufferGeometry( 1, 1, 1 ), new MeshPhongMaterial( { color: 0xffffff } ) )
-			},
-			length: 10,
-			speed: 1,
+			model: { object3D: new Mesh(
+				new SphereBufferGeometry( 0.6 ),
+				new MeshPhongMaterial( { color: 0xffffff } )
+			) },
+			length: 50,
+			speed: 0.25,
 			tail: new List(),
 			queue: new List()
 		};

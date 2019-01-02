@@ -1,5 +1,4 @@
 
-import alea from "./lib/alea.js";
 import EventDispatcher from "./node_modules/wc-eventdispatcher/src/EventDispatcher.js";
 import IOPlayerColors from "./node_modules/webcraft/src/systems/players/IOPlayerColors.js";
 import Graphic from "./node_modules/webcraft/src/systems/Graphic.js";
@@ -35,7 +34,7 @@ export default class Powerline extends App {
 
 	constructor( props ) {
 
-		super( { ...props, updateFrequency: 100 } );
+		super( props );
 
 		this.addSystem( new Graphic( { camera: 150 } ) );
 		this.addSystem( new IOPlayerColors() );
@@ -65,9 +64,8 @@ export default class Powerline extends App {
 	onJoin( e ) {
 
 		super.onJoin( e );
-		console.log( "Powerline#onJoin", this.seed );
-		const player = new Player( { account: e.account } );
-		this.addEntity( player );
+
+		const player = Player.fromAccount( e.account );
 
 		player.snake = this.addEntity( new Snake( {
 			x: randomInt( this.random(), 50, - 50 ),
