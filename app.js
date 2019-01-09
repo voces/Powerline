@@ -2,6 +2,7 @@
 import EventDispatcher from "./node_modules/wc-eventdispatcher/src/EventDispatcher.js";
 import IOPlayerColors from "./node_modules/webcraft/src/systems/players/IOPlayerColors.js";
 import Graphic from "./node_modules/webcraft/src/systems/Graphic.js";
+import Pathing from "./node_modules/webcraft/src/systems/Pathing.js";
 import App from "./node_modules/webcraft/src/App.js";
 import { load, randomInt } from "./node_modules/webcraft/src/util.js";
 import Keyboard from "./node_modules/webcraft/src/actions/Keyboard.js";
@@ -39,6 +40,7 @@ export default class Powerline extends App {
 		this.addSystem( new Graphic( { camera: 150 } ) );
 		this.addSystem( new IOPlayerColors() );
 		this.addSystem( new SnakeMovement() );
+		this.addSystem( new Pathing() );
 
 		new Keyboard( {
 			app: this,

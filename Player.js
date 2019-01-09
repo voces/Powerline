@@ -20,8 +20,6 @@ export default class Player extends WCPlayer {
 	constructor( props ) {
 
 		super( props );
-		Object.seal( this );
-
 		dict[ this.account ] = this;
 
 	}

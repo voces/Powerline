@@ -4,6 +4,12 @@ import { SphereBufferGeometry, MeshPhongMaterial, Mesh } from "./node_modules/th
 
 export default class Block extends Unit {
 
+	static get properties() {
+
+		return super.properties( "snake" );
+
+	}
+
 	static get defaultData() {
 
 		return { model: { object3D: new Mesh(

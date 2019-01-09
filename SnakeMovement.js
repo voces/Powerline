@@ -22,13 +22,14 @@ export default class SnakeMovement extends System {
 
 		// Create a new tail if needed
 		if ( snake.tail.length < snake.length )
-			snake.tail.push( snake.app.addEntity( new Block( { x: snake.x, y: snake.y } ) ) );
+			snake.tail.push( snake.app.addEntity( new Block( { x: snake.x, y: snake.y, snake } ) ) );
 
 		// Else move end to front
 		else {
 
 			const block = snake.tail.shift();
-			block.update( { x: snake.x, y: snake.y } );
+			block.x = snake.x;
+			block.y = snake.y;
 			snake.tail.push( block );
 
 		}
@@ -50,11 +51,15 @@ export default class SnakeMovement extends System {
 
 		}
 
-		// Remove if out of bounds
+		// Kill if out of bounds
 		if ( pos.x <= - 50 || pos.x >= 50 ||
 			pos.y <= - 50 || pos.y >= 50 )
 
-			return snake.remove();
+			return snake.kill();
+
+		// Kill if running into something
+		if ( snake.app.pathing.enumerateInRange( pos, snake.speed - 1e-7 ).length > 0 )
+			return snake.kill();
 
 		// Move the snake head
 		if ( [ "up", "down" ].includes( snake.direction ) ) snake.y = pos.y;

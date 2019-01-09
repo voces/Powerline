@@ -1,9 +1,9 @@
 
-import Doodad from "./node_modules/webcraft/src/entities/Doodad.js";
+import Unit from "./node_modules/webcraft/src/entities/Unit.js";
 import { SphereBufferGeometry, MeshPhongMaterial, Mesh } from "./node_modules/three/build/three.module.js";
 import List from "./List.js";
 
-class Snake extends Doodad {
+class Snake extends Unit {
 
 	static get properties() {
 
@@ -27,10 +27,17 @@ class Snake extends Doodad {
 
 	}
 
-	constructor( ...props ) {
+	onUpdatedAlive() {
 
-		super( ...props );
-		Object.seal( this );
+		if ( this.alive ) return;
+
+		console.log( "kill!" );
+		for ( const block of this.tail ) {
+
+			console.log( block, this.distanceTo( block ) );
+			block.kill();
+
+		}
 
 	}
 

@@ -11,11 +11,13 @@
 		"arrow-parens": [ "error", "as-needed" ],
 		"arrow-body-style": [ "error", "as-needed" ],
 		"no-var": [ "error" ],
+		"no-unused-vars": [ "warn", { "ignoreRestSiblings": true } ],
 		"curly": [ "error", "multi" ],
 		"object-shorthand": [ "error" ],
 		"eqeqeq": [ "error" ],
-		"prefer-const": [ "error" ],
+		"prefer-const": [ "warn" ],
 		"no-console": 0,
 		"no-constant-condition": 0
 	}
 }
+
